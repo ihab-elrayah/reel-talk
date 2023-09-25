@@ -79,7 +79,7 @@ exports.onFavoriteFilmsSelected = functions.firestore
 
 // profile_created event
 
-exports.profile_created = functions.firestore
+exports.onProfileCreated = functions.firestore
     .document('profile_created/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -103,7 +103,7 @@ exports.onUserLoggedOut = functions.firestore
 
 // created_community event
 
-exports.created_community = functions.firestore
+exports.onCreatedCommunity = functions.firestore
     .document('created_community/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -113,7 +113,7 @@ exports.created_community = functions.firestore
 
 // joined_community event
 
-exports.joined_community = functions.firestore
+exports.onJoinedCommunity = functions.firestore
     .document('joined_community/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -122,7 +122,7 @@ exports.joined_community = functions.firestore
 
 // created_discussion event
 
-exports.created_discussion = functions.firestore
+exports.onCreatedDiscussion = functions.firestore
     .document('created_discussion/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -131,7 +131,7 @@ exports.created_discussion = functions.firestore
 
 // posted_comment event
 
-exports.posted_comment = functions.firestore
+exports.onPostedComment = functions.firestore
     .document('posted_comment/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -140,7 +140,7 @@ exports.posted_comment = functions.firestore
 
 // replied_comment event
 
-exports.replied_comment = functions.firestore
+exports.onRepliedComment = functions.firestore
     .document('replied_comment/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -149,7 +149,7 @@ exports.replied_comment = functions.firestore
 
 // rated_content event
 
-exports.rated_content = functions.firestore
+exports.onRatedContent = functions.firestore
     .document('rated_content/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -158,7 +158,7 @@ exports.rated_content = functions.firestore
 
 // reviewed_content event
 
-exports.reviewed_content = functions.firestore
+exports.onReviewedContent = functions.firestore
     .document('reviewed_content/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -167,7 +167,7 @@ exports.reviewed_content = functions.firestore
 
 // searched event
 
-exports.searched = functions.firestore
+exports.onSearched = functions.firestore
     .document('searched/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -176,7 +176,7 @@ exports.searched = functions.firestore
 
 // page_visit event
 
-exports.page_visit = functions.firestore
+exports.onPageVisit = functions.firestore
     .document('page_visit/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -185,7 +185,7 @@ exports.page_visit = functions.firestore
 
 // review_liked event
 
-exports.review_liked = functions.firestore
+exports.onReviewLiked = functions.firestore
     .document('review_liked/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -194,7 +194,7 @@ exports.review_liked = functions.firestore
 
 // watchlisted event
 
-exports.watchlisted = functions.firestore
+exports.onWatchListed = functions.firestore
     .document('watchlisted/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -203,7 +203,7 @@ exports.watchlisted = functions.firestore
 
 // viewed_trailer event
 
-exports.viewed_trailer = functions.firestore
+exports.onViewedTrailer = functions.firestore
     .document('viewed_trailer/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -212,7 +212,7 @@ exports.viewed_trailer = functions.firestore
 
 // other_profile_view event
 
-exports.other_profile_view = functions.firestore
+exports.onOtherProfileView = functions.firestore
     .document('other_profile_view/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -221,7 +221,7 @@ exports.other_profile_view = functions.firestore
 
 // message_sent event
 
-exports.message_sent = functions.firestore
+exports.onMessageSent = functions.firestore
     .document('message_sent/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -230,7 +230,7 @@ exports.message_sent = functions.firestore
 
 // followed_user event
 
-exports.followed_user = functions.firestore
+exports.onFollowedUser = functions.firestore
     .document('followed_user/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -240,7 +240,7 @@ exports.followed_user = functions.firestore
 
 // profile_edit event
 
-exports.profile_edit = functions.firestore
+exports.onProfileEdit = functions.firestore
     .document('profile_edit/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -249,7 +249,7 @@ exports.profile_edit = functions.firestore
 
 // account_deleted event
 
-exports.account_deleted = functions.firestore
+exports.onAccountDeleted = functions.firestore
     .document('account_deleted/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -258,7 +258,7 @@ exports.account_deleted = functions.firestore
 
 // account_updated event
 
-exports.account_updated = functions.firestore
+exports.onAccountUpdated = functions.firestore
     .document('profile_edit/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -271,7 +271,7 @@ exports.account_updated = functions.firestore
 
 // in_app_purchase event
 
-exports.in_app_purchase = functions.firestore
+exports.onInAppPurchase = functions.firestore
     .document('in_app_purchase/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
@@ -280,7 +280,7 @@ exports.in_app_purchase = functions.firestore
 
 // gem_spent event
 
-exports.gem_spent = functions.firestore
+exports.onGemSpent = functions.firestore
     .document('gem_spent/{userId}')
     .onCreate((snap, context) => {
         const newData = snap.data();
