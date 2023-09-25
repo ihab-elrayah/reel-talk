@@ -287,4 +287,19 @@ exports.onGemSpent = functions.firestore
         console.log('User awards a gem on content, another user, or community with ID:', context.params.userId, 'and data:', newData);
     });
 
+/*
+npx firebase deploy --only functions // to deploy/run funtion
+
+npx firebase init // adding cloud forestore/ storage/  anatyics 
+
+npx firebase login // check log in correcly 
+
+npx firebase --version // check version and see if firebase correcly installlednpx firebase deploy --only functions // to deploy/run funtion
+
+npx firebase init // adding cloud forestore/ storage/  anatyics 
+
+npx firebase login // check log in correcly 
+
+npx firebase --version // check version and see if firebase correcly installled
+*/
 
