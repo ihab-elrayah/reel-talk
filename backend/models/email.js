@@ -8,4 +8,4 @@ class Email {
         this.hash = hash;
         this.salt = salt;
     }
-}
+} 
