@@ -14,13 +14,14 @@ router.get('/', async(req, res) => {
 router.post('/signup', async(req, res) => {
     try{
         const { email, password } = req.body;
+        const checkUser = await firestore.collection('user').where('email', '==', email).limit(1).get();
+        if (!checkUser.empty) return res.send({ message: "Email already in use, please sign in!"})
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password, salt);
         const user = await admin.auth().createUser({
             email: email,
             password: hash
         })
-        console.log(user)
 
         const actionCodeSettings = {
             // URL you want to redirect back to. The domain (www.example.com) for
