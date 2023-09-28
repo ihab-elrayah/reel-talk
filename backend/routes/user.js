@@ -5,7 +5,8 @@ const firestore = admin.firestore();
 const bcrypt = require('bcrypt');
 const auth = admin.auth();
 const jwt = require('jsonwebtoken');
-const mailSend = require('../sendmail')
+const mailSend = require('../sendmail');
+const crypto = require('crypto');
 
 router.get('/', async(req, res) => {
     res.send('Hello from user page')
@@ -62,6 +63,7 @@ router.post('/signup', async(req, res) => {
 
 router.post('/signin', async (req, res) => {
 
+    const jwtSecret = crypto.randomBytes(32).toString('hex')
     try {
         const { email, password } = req.body;
         await admin.auth().getUserByEmail(email)
@@ -74,16 +76,22 @@ router.post('/signin', async (req, res) => {
                 if (!isPasswordMatch) return res.json({ message: "Invaild credentials!"})
                 const token = await jwt.sign(
                     {uid: user.uid},
-                    "testing-key",
-                    { expiresIn: 1800 }
+                    jwtSecret,
+                    { expiresIn: '2h' }
                 )
         
+                res.cookie('token', token, {
+                    httpOnly: true,
+                    secure: true,
+                    maxAge: 2 * 60 * 60 * 1000,
+                })
                 res.json({ message: "Login successful!"})
             } else {
                 return res.json({ message: "Email has not verified!"})
             }
         })
     } catch (err) {
+        console.log(err)
         res.json({ message: "Login failed!"})
     }
 
