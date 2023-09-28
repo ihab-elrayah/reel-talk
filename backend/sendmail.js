@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 
 async function sendEmail(recipientEmail, emailSubject, link) {
     const mailOption = {
-        from: process.env.GMAIL,
+        from: 'noreply@reeltalk.com',
         to: recipientEmail,
         subject: emailSubject,
         text: `Follow this link to verify your email address. 

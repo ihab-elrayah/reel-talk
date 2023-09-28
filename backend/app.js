@@ -6,7 +6,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const admin = require('firebase-admin');
 const credentials = require('./firebase_config.json');
-const FirestoreStore = require("firestore-store")(session);
+// const FirestoreStore = require("firestore-store")(session);
 const crypto = require('crypto');
 
 admin.initializeApp({
@@ -16,9 +16,9 @@ admin.initializeApp({
 const db = admin.firestore();
 
 app.use(session({
-    store: new FirestoreStore({
-        database: db
-    }),
+    // store: new FirestoreStore({
+    //     database: db
+    // }),
     secret: crypto.randomBytes(32).toString('hex'),
     resave: false,
     cookie: {
