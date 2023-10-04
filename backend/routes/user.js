@@ -5,6 +5,8 @@ const firestore = admin.firestore();
 const bcrypt = require('bcrypt');
 const auth = admin.auth();
 const jwt = require('jsonwebtoken');
+const mailSend = require('../sendmail');
+const crypto = require('crypto');
 
 router.get('/', async(req, res) => {
     res.send('Hello from user page')
@@ -13,12 +15,13 @@ router.get('/', async(req, res) => {
 router.post('/signup', async(req, res) => {
     try{
         const { email, password } = req.body;
+        const checkUser = await firestore.collection('user').where('email', '==', email).limit(1).get();
+        if (!checkUser.empty) return res.send({ message: "Email already in use, please sign in!"})
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password, salt);
         const user = await admin.auth().createUser({
             email: email,
-            password: hash,
-            emailVerified: false
+            password: hash
         })
 
         const actionCodeSettings = {
@@ -40,7 +43,8 @@ router.post('/signup', async(req, res) => {
         };
         try {
             const link = await admin.auth().generateEmailVerificationLink(email, actionCodeSettings)
-            console.log(link)
+            const subject = "Email Verfication";
+            await mailSend.sendEmail(email, subject, link).then(() => console.log("Sent!"))
         } catch (err) {
             console.log(err)
             res.send({ message: "Failed!"})
@@ -49,8 +53,7 @@ router.post('/signup', async(req, res) => {
 
         await firestore.collection('user').doc(user.uid).set({
             email,
-            hash,
-            emailVerified: false
+            hash
         })
         res.json({ message: "sign up successful!" })
     } catch (err) {
@@ -60,32 +63,43 @@ router.post('/signup', async(req, res) => {
 
 router.post('/signin', async (req, res) => {
 
+    const jwtSecret = crypto.randomBytes(32).toString('hex')
     try {
         const { email, password } = req.body;
-        const user = await firestore.collection('user').where('email', '==', email).limit(1).get();
-        if (user.empty) return res.json({ message: "User not found"})
-        // if (!user.emailVerified) return res.json({ message: "Email has not verified!"})
-        const isPasswordMatch = await bcrypt.compare(password, user.docs[0].data().hash)
-        if (!isPasswordMatch) return res.json({ message: "Invaild credentials!"})
+        await admin.auth().getUserByEmail(email)
+        .then(async (userRecord) => {
+            const uid = userRecord.uid
+            if (userRecord.emailVerified) {
+                const user = await firestore.collection('user').where('email', '==', email).limit(1).get();
+                if (user.empty) return res.json({ message: "User not found"})
+                const isPasswordMatch = await bcrypt.compare(password, user.docs[0].data().hash)
+                if (!isPasswordMatch) return res.json({ message: "Invaild credentials!"})
+                const token = await jwt.sign(
+                    {uid: user.uid},
+                    jwtSecret,
+                    { expiresIn: '2h' }
+                )
         
-        const token = await jwt.sign(
-            {uid: user.uid},
-            "testing-key",
-            { expiresIn: 1800 }
-        )
-
-        res.json({ message: "Login successful!"})
+                res.cookie('token', token, {
+                    httpOnly: true,
+                    secure: true,
+                    maxAge: 2 * 60 * 60 * 1000,
+                })
+                res.json({ message: "Login successful!"})
+            } else {
+                return res.json({ message: "Email has not verified!"})
+            }
+        })
     } catch (err) {
+        console.log(err)
         res.json({ message: "Login failed!"})
     }
 
 })
 
 router.get('/email-verification', async(req, res) => {
-    const oobCode = req.query.oobCode;
-    console.log(oobCode)
     try {
-        
+        res.send("<p>You account has been verified!<p/>")
     } catch (err) {
         console.log(err)
     }
